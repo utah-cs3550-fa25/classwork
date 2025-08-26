@@ -1,0 +1,19 @@
+html {
+    font-size: 24px;
+    font-family: "Helvetica Neue", "Arial", sans-serif;
+}
+
+header h1 { font-family: serif; }
+
+.cat { color: papayawhip; font-style: normal; }
+.cat::before { content: "🐈 "; }
+
+.featured {
+    color: blue; background-color: papayawhip;
+    border-width: 10px 0 10px 0;
+    border-style: solid;
+    border-color: #01b;
+    border-radius: 10px;
+}
+
+.cat.featured { font-size: 120%; }
