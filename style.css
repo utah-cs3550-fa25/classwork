@@ -1,3 +1,5 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
 html {
     font-size: 24px;
     font-family: "Helvetica Neue", "Arial", sans-serif;
@@ -17,3 +19,29 @@ header h1 { font-family: serif; }
 }
 
 .cat.featured { font-size: 120%; }
+
+body {
+    gap: 3rem;
+    display: flex; flex-direction: column;
+}
+
+main {
+    padding: 0 1rem 2rem 1rem;
+    display: flex; flex-direction: column;
+    gap: 3rem;
+}
+
+header {
+    display: flex; flex-direction: column;
+    padding: .5rem 1rem .5rem;
+    border-bottom: 1px solid #01b;
+    background-color: papayawhip;
+}
+
+.heading-container {
+    display: flex; flex-direction: column;
+    gap: .5rem;
+}
+
+nav { display: flex; flex-direction: row; gap: 2rem; }
+menu { display: flex; flex-direction: row; padding: 5px 0; gap: 1rem; }
