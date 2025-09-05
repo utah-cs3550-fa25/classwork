@@ -45,3 +45,27 @@ header {
 
 nav { display: flex; flex-direction: row; gap: 2rem; }
 menu { display: flex; flex-direction: row; padding: 5px 0; gap: 1rem; }
+
+#recent-adoptions {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 1rem;
+    background: #eee;
+    border: 1px solid black;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+#recent-adoptions div {
+    display: flex; flex-direction: row;
+    gap: 1rem;
+}
+
+#recent-adoptions li {
+    border: 1px solid navy;
+    background: papayawhip;
+    padding: 1rem;
+    width: 200px;
+    list-style: none;
+}
