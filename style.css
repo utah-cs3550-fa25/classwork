@@ -5,7 +5,10 @@ html {
     font-family: "Helvetica Neue", "Arial", sans-serif;
 }
 
-header h1 { font-family: serif; }
+header h1 {
+    font-family: serif;
+    font-size: calc(clamp(.5rem, 8vw, 3.0rem));
+}
 
 .cat { color: papayawhip; font-style: normal; }
 .cat::before { content: "🐈 "; }
@@ -68,4 +71,30 @@ menu { display: flex; flex-direction: row; padding: 5px 0; gap: 1rem; }
     padding: 1rem;
     width: 200px;
     list-style: none;
+}
+
+header nav button {
+    display: none;
+    font-size: 8vw;
+    padding: 0 .1rem;
+}
+
+@media (max-width: 800px) {
+    header nav menu,
+    header nav form
+    { display: none; }
+    header nav button { display: block; }
+    header h1 + p { display: none; }
+    header {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    header:has(nav button:hover) {
+        flex-direction: column;
+    }
+
+    header nav button:hover ~ menu {
+        display: flex;
+    }
 }
