@@ -1,2 +1,17 @@
 <!doctype html>
-<h1>Hiyo!</h1>
+<h1>Hiyo!
+We have
+{{cats|length}}
+cat{{cats|length|pluralize}}</h1>
+
+<p>Our favorite cats are:
+{% for cat in cats %}
+  {% if cat.name %}
+  <a href="/cat/{{cat.id}}">{{cat.name}} is {{cat.adoptability}}% adoptable</a>
+  {% else %}
+  an unnamed cat (not adoptable yet, but soon!)
+  {% endif %}
+  {% if not forloop.last %}, {% endif %}
+{% endfor %}
+
+</ul>

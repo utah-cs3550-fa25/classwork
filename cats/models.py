@@ -23,6 +23,12 @@ class Cat(models.Model):
     health = models.OneToOneField(
         'HealthRecord', on_delete=models.RESTRICT)
 
+    def adoptability(self):
+        # ...
+        return 100
+
+
+
 class HealthRecord(models.Model):
     spayed_neutered = models.BooleanField()
 

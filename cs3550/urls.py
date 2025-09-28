@@ -20,5 +20,6 @@ import cats.views as views
 
 urlpatterns = [
     path('', views.index),
+    path("cat/<int:cat_id>", views.view_cat),
     path('admin/', admin.site.urls),
 ]
