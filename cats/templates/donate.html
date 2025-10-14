@@ -1,0 +1,12 @@
+<!doctype html>
+<style>
+form { display: flex; flex-direction: column; align-items: start; }
+</style>
+<h1>Donate a cat</h1>
+<form method="post" action="/donate/">
+  <label>Name: <input name="name" type="text"></label>
+  {% csrf_token %}
+  <label>Weight (lbs): <input name="weight" type="number" step=".1"></label>
+  <label><input type="checkbox" name="sn"> Spayed/Neutered?</label>
+  <button>Search</button>
+</form>

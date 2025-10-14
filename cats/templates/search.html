@@ -1,0 +1,25 @@
+<!doctype html>
+<style>
+form { display: flex; flex-direction: column; align-items: start; }
+</style>
+<h1>Search for a cat to adopt</h1>
+<form method="get" action="/search/">
+  <label>Color: <select name="color">
+  <option>White</option>
+  <option>Black</option>
+  <option>Gray</option>
+  <option>Orange</option>
+  <option>Mixed</option>
+  </select></label>
+
+  <label>Age (years): <input name="age" type="number"></label>
+  <label><input type="radio" name="agetype" value="min" checked> Minimum</label>
+  <label><input type="radio" name="agetype" value="max"> Maximum</label>
+
+  <label><input type="checkbox" name="s_or_n" value="yes"> Require Spayed/Neutered?</label>
+
+  <label>Please write a sob story about how much you love cats:
+    <textarea rows=20 cols=50></textarea></label>
+
+  <button>Search</button>
+</form>

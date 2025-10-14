@@ -21,5 +21,7 @@ import cats.views as views
 urlpatterns = [
     path('', views.index),
     path("cat/<int:cat_id>", views.view_cat),
+    path('search/', views.search),
+    path('donate/', views.donate),
     path('admin/', admin.site.urls),
 ]
