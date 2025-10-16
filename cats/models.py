@@ -1,11 +1,13 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 # Create your models here.
+def is_positive(v):
+    if v <= 0:
+        raise ValidationError(f"{v} is not positive")
 
 class Cat(models.Model):
-    name = models.CharField(
-        max_length=20,
-        blank=True)
+    name = models.CharField(max_length=20)
     age = models.IntegerField(
         null=True, blank=True)
     breed = models.CharField(
@@ -18,7 +20,7 @@ class Cat(models.Model):
     backstory = models.TextField(
         blank=True)
     gender = models.CharField(max_length=10)
-    weight_lbs = models.FloatField()
+    weight_lbs = models.FloatField(validators=[is_positive])
 
     health = models.OneToOneField(
         'HealthRecord', on_delete=models.RESTRICT)

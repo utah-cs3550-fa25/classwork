@@ -1,12 +1,39 @@
 <!doctype html>
 <style>
 form { display: flex; flex-direction: column; align-items: start; }
+
+input:invalid { border-color: red; color: red; }
 </style>
 <h1>Donate a cat</h1>
 <form method="post" action="/donate/">
-  <label>Name: <input name="name" type="text"></label>
+
+  <label>Name: <input name="name" required type="text" value="{{cat.name}}"></label>
+  <output>
+  <ul>
+    {% for error in errors.name %}
+    <li>{{ error }}</li>
+    {% endfor %}
+  </ul>
+  </output>
+
   {% csrf_token %}
-  <label>Weight (lbs): <input name="weight" type="number" step=".1"></label>
-  <label><input type="checkbox" name="sn"> Spayed/Neutered?</label>
+  <label>Weight (lbs): <input required name="weight" min=0 type="number" step=".1" value="{{cat.weight_lbs}}"></label>
+  <output>
+  <ul>
+    {% for error in errors.weight_lbs %}
+    <li>{{ error }}</li>
+    {% endfor %}
+  </ul>
+  </output>
+
+  <label><input type="checkbox" name="sn" {% if cat.hr.spayed_neutered %}checked{%endif%}> Spayed/Neutered?</label>
+  <output>
+  <ul>
+    {% for error in errors.sn %}
+    <li>{{ error }}</li>
+    {% endfor %}
+  </ul>
+  </output>
+
   <button>Search</button>
 </form>

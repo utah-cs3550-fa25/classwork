@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import Http404
 from django.views.decorators.http import require_GET
+from django.core.exceptions import ValidationError
 from .models import *
 
 # Create your views here.
@@ -39,15 +40,28 @@ def search(request):
     return render(request, "search.html", {})
 
 def donate(request):
+    errors = {}
+    cat = None
+
     if request.method == "POST":
-        name = request.POST.get("name", "[Unnamed]")
-        weight = float(request.POST.get("weight", "0.0"))
-        spayed_neutered = "sn" in request.POST
+        cat = Cat()
+        cat.health = HealthRecord()
+        cat.name = request.POST.get("name", "[Unnamed]")
+        cat.weight_lbs = request.POST.get("weight", "0.0")
+        cat.spayed_neutered = "sn" in request.POST
 
-        cat = Cat(name=name, weight_lbs=weight)
-        cat.health = HealthRecord(spayed_neutered=spayed_neutered)
-        cat.health.save()
-        cat.save()
-        return redirect("/cat/" + str(cat.id))
 
-    return render(request, "donate.html", {})
+        try:
+            cat.full_clean()
+        except ValidationError as e:
+            errors = e.message_dict
+
+        if not errors:
+            cat.health.save()
+            cat.save()
+            return redirect("/cat/" + str(cat.id))
+
+    return render(request, "donate.html", {
+        "errors": errors,
+        "cat": cat,
+    })
