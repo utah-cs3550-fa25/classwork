@@ -5,6 +5,20 @@ form { display: flex; flex-direction: column; align-items: start; }
 input:invalid { border-color: red; color: red; }
 </style>
 <h1>Donate a cat</h1>
+
+{% if not user.is_anonymous %}
+<p>
+You are logged in as {{ user }}
+<a href="/logout">
+Log out
+</a>
+</p>
+{% else %}
+<p>
+Please <a href="/login?next=/donate">log in</a>
+</p>
+{% endif %}
+
 <form method="post" action="/donate/">
 
   <label>Name: <input name="name" required type="text" value="{{cat.name}}"></label>

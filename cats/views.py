@@ -1,18 +1,25 @@
 from django.shortcuts import render, redirect
 from django.http import Http404
 from django.views.decorators.http import require_GET
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, PermissionDenied
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import user_passes_test
+from django.views.decorators.csrf import csrf_exempt
 from .models import *
+from .security import *
 
 # Create your views here.
 def index(request):
     cats = Cat.objects \
               .filter(health__spayed_neutered=True)
 
+    print(dict(request.session))
+
     return render(request, "index.html", {
         "cats": cats,
     })
 
+@user_passes_test(user_is_staff)
 def view_cat(request, cat_id):
     try:
         cat = Cat.objects.get(id=cat_id)
@@ -39,7 +46,11 @@ def search(request):
 
     return render(request, "search.html", {})
 
+@user_passes_test(can_donate_cat)
 def donate(request):
+    if not can_donate_cat(request.user):
+        raise PermissionDenied
+
     errors = {}
     cat = None
 
@@ -48,20 +59,46 @@ def donate(request):
         cat.health = HealthRecord()
         cat.name = request.POST.get("name", "[Unnamed]")
         cat.weight_lbs = request.POST.get("weight", "0.0")
-        cat.spayed_neutered = "sn" in request.POST
+        cat.health.spayed_neutered = "sn" in request.POST
 
-
-        try:
-            cat.full_clean()
-        except ValidationError as e:
-            errors = e.message_dict
 
         if not errors:
             cat.health.save()
             cat.save()
+            print("Redirecting?")
             return redirect("/cat/" + str(cat.id))
 
     return render(request, "donate.html", {
         "errors": errors,
         "cat": cat,
     })
+
+def handle_login(request):
+    errors = []
+    
+    if request.method == "GET":
+        next = request.GET.get("next", "/")
+    elif request.method == "POST":
+        username = request.POST.get("user", "")
+        password = request.POST.get("pass", "")
+        next = request.POST.get("next", "/")
+
+        user = authenticate(request, username=username, password=password)
+        if not user:
+            errors.append("Invalid username or password")
+
+        if not errors:
+            login(request, user)
+            if next.startswith("/") and not next.startswith("//"):
+                return redirect(next)
+            else:
+                return redirect(index)
+
+    return render(request, "login.html", {
+        "errors": errors,
+        "next": next,
+    })
+
+def handle_logout(request):
+    logout(request)
+    return redirect("/")

@@ -6,6 +6,9 @@ def is_positive(v):
     if v <= 0:
         raise ValidationError(f"{v} is not positive")
 
+def user_is_staff(user):
+    return user.groups.filter(name="Staff").exists()
+
 class Cat(models.Model):
     name = models.CharField(max_length=20)
     age = models.IntegerField(
@@ -28,7 +31,6 @@ class Cat(models.Model):
     def adoptability(self):
         # ...
         return 100
-
 
 
 class HealthRecord(models.Model):

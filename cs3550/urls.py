@@ -23,5 +23,7 @@ urlpatterns = [
     path("cat/<int:cat_id>", views.view_cat),
     path('search/', views.search),
     path('donate/', views.donate),
+    path('login', views.handle_login),
+    path('logout', views.handle_logout),
     path('admin/', admin.site.urls),
 ]

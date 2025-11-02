@@ -4,6 +4,19 @@ We have
 {{cats|length}}
 cat{{cats|length|pluralize}}</h1>
 
+{% if not user.is_anonymous %}
+<p>
+You are logged in as {{ user }}
+<a href="/logout">
+Log out
+</a>
+</p>
+{% else %}
+<p>
+Please <a href="/login?next=/">log in</a>
+</p>
+{% endif %}
+
 <p>Our favorite cats are:
 {% for cat in cats %}
   {% if cat.name %}
