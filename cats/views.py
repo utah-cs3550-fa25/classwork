@@ -102,6 +102,3 @@ def handle_login(request):
 def handle_logout(request):
     logout(request)
     return redirect("/")
-
-def main_js(request):
-    return FileResponse(open("static/main.js", "rb"), content_type="text/javascript")
