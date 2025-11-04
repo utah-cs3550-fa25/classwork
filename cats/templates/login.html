@@ -1,0 +1,20 @@
+<!doctype html>
+
+<h1>Log in</h1>
+
+<form method="post" action="/login">
+  <output>
+    <ul>
+    {% for error in errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+  </output>
+
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{next}}">
+
+  <label>Username: <input name="user"></label>
+  <label>Password: <input name="pass" type="password"></label>
+  <button>Log in</button>
+</form>

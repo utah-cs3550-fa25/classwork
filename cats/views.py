@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import Http404
+from django.http import Http404, FileResponse
 from django.views.decorators.http import require_GET
 from django.core.exceptions import ValidationError, PermissionDenied
 from django.contrib.auth import authenticate, login, logout
@@ -102,3 +102,6 @@ def handle_login(request):
 def handle_logout(request):
     logout(request)
     return redirect("/")
+
+def main_js(request):
+    return FileResponse(open("static/main.js", "rb"), content_type="text/javascript")

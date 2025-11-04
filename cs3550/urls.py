@@ -26,4 +26,5 @@ urlpatterns = [
     path('login', views.handle_login),
     path('logout', views.handle_logout),
     path('admin/', admin.site.urls),
+    path("main.js", views.main_js),
 ]
