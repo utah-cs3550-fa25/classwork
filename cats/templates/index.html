@@ -1,8 +1,13 @@
 <!doctype html>
 
+<link rel="stylesheet" href="/static/main.css">
 <script src="/static/main.js" type="module"></script>
 
-<input>
+<div>
+<input id="cat_search">
+<ul id="cat_results">
+</ul>
+</div>
 
 <h1>Hiyo!
 We have
@@ -25,7 +30,7 @@ Please <a href="/login?next=/">log in</a>
 <p>Our favorite cats are:
 {% for cat in cats %}
   {% if cat.name %}
-  <a href="/cat/{{cat.id}}">{{cat.name}} is {{cat.adoptability}}% adoptable</a>
+  <a class="cat" data-cat-name="{{cat.name}}" href="/cat/{{cat.id}}">{{cat.name}} is {{cat.adoptability}}% adoptable</a>
   {% else %}
   an unnamed cat (not adoptable yet, but soon!)
   {% endif %}
