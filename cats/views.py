@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import Http404, FileResponse
+from django.http import Http404, FileResponse, JsonResponse
 from django.views.decorators.http import require_GET
 from django.core.exceptions import ValidationError, PermissionDenied
 from django.contrib.auth import authenticate, login, logout
@@ -7,13 +7,11 @@ from django.contrib.auth.decorators import user_passes_test
 from django.views.decorators.csrf import csrf_exempt
 from .models import *
 from .security import *
+import time
 
 # Create your views here.
 def index(request):
-    cats = Cat.objects \
-              .filter(health__spayed_neutered=True)
-
-    print(dict(request.session))
+    cats = Cat.objects.all()
 
     return render(request, "index.html", {
         "cats": cats,
@@ -102,3 +100,9 @@ def handle_login(request):
 def handle_logout(request):
     logout(request)
     return redirect("/")
+
+def api_cats(request):
+    cats = Cat.objects.all()
+    return JsonResponse({
+        "cats": [cat.name for cat in cats]
+    })

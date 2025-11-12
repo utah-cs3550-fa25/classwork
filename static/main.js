@@ -18,22 +18,31 @@ function update_results(cat_search_div) {
     let search_query = cat_input.value;
 
     let cat_results = cat_search_div.querySelector("#cat_results");
-    let cats = document.querySelectorAll(".cat");
-    let new_results = [];
-    for (let cat of cats) {
-        let cat_name = cat.dataset.catName;
-        if (cat_name.indexOf(search_query) !== -1) {
-            let li = document.createElement("li");
-            li.append(cat_name)
-            new_results.push(li);
+    fetch("/api/cats").catch((e) => {
+        return Array.from(document.querySelector(".cats")).map((elt) => {
+            return cat.dataset.catName;
+});
+    }).then((resp) => {
+        if (!resp.ok) {
+            throw Exception(resp);
         }
-    }
-    cat_results.replaceChildren(... new_results);
+        return resp.json();
+    }).then((data) => {
+        let new_results = [];
+        for (let cat_name of data.cats) {
+            if (cat_name.indexOf(search_query) !== -1) {
+                let li = document.createElement("li");
+                li.append(cat_name)
+                new_results.push(li);
+            }
+        }
+        cat_results.replaceChildren(... new_results);
+    });
 }
 
 let cat_search = document.querySelector("#cat_search");
 if (cat_search) {
-    cat_search.addEventListener("focus", (e) => {
+    cat_search.addEventListener("click", (e) => {
         cat_search.closest("div").classList.add("selected");
         update_results(cat_search.closest("div"));
     });
@@ -44,3 +53,19 @@ if (cat_search) {
         cat_search.closest("div").classList.remove("selected");
     });
 }
+
+/*
+fetch("/login").catch((e) => {
+    console.log("Request failed", e);
+}).then((resp) => {
+    if (!resp.ok) {
+        console.log("I am sad, bad response", resp.statusText)
+        return;
+    }
+    return resp.text();
+}).then((data) => {
+    console.log(data);
+});
+
+console.log("Fetch made");
+*/
