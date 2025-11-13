@@ -13,23 +13,28 @@ if (show_pwd_box) {
     });
 }
 
-function update_results(cat_search_div) {
+async function update_results(cat_search_div) {
     let cat_input = cat_search_div.querySelector("#cat_search");
     let search_query = cat_input.value;
 
     let cat_results = cat_search_div.querySelector("#cat_results");
-    fetch("/api/cats").catch((e) => {
-        return Array.from(document.querySelector(".cats")).map((elt) => {
-            return cat.dataset.catName;
-});
-    }).then((resp) => {
+    try {
+        let resp = await fetch("/api/cats")
         if (!resp.ok) {
-            throw Exception(resp);
+            throw Error(resp);
         }
-        return resp.json();
-    }).then((data) => {
+        let data = await resp.json();
+        
         let new_results = [];
-        for (let cat_name of data.cats) {
+        for (let cat_id of data.cats) {
+            let cat_url = new URL("/api/cat", window.location);
+            cat_url.searchParams.set("id", cat_id);
+            let resp = await fetch(cat_url);
+            if (!resp.ok) {
+                throw Error(resp)
+            }
+            let cat_data = await resp.json();
+            let cat_name = cat_data.name;
             if (cat_name.indexOf(search_query) !== -1) {
                 let li = document.createElement("li");
                 li.append(cat_name)
@@ -37,7 +42,11 @@ function update_results(cat_search_div) {
             }
         }
         cat_results.replaceChildren(... new_results);
-    });
+    } catch (e) {
+        return Array.from(document.querySelector(".cats")).map((elt) => {
+            return cat.dataset.catName;
+        });
+    }
 }
 
 let cat_search = document.querySelector("#cat_search");

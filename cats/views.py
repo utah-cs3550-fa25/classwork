@@ -104,5 +104,13 @@ def handle_logout(request):
 def api_cats(request):
     cats = Cat.objects.all()
     return JsonResponse({
-        "cats": [cat.name for cat in cats]
+        "cats": [cat.id for cat in cats]
+    })
+
+def api_cat(request):
+    id = request.GET["id"]
+    cat = Cat.objects.get(id=id)
+    return JsonResponse({
+        "name": cat.name,
+        "photo": cat.photo.url if cat.photo else None,
     })
