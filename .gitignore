@@ -1,6 +1,10 @@
 # Created by venv; see https://docs.python.org/3/library/venv.html
 bin/
 lib/
-db.sqlite3
+include/
 pyvenv.cfg
+
+# Other ignore files
+db.sqlite3
 __pycache__
+.DS_Store
